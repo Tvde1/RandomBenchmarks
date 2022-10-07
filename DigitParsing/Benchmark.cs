@@ -41,17 +41,17 @@ public class Benchmark
         ref var startRef = ref Unsafe.As<char, ushort>(ref MemoryMarshal.GetReference(inputText));
         ref var destRef = ref Unsafe.As<int, uint>(ref MemoryMarshal.GetArrayDataReference(arr));
 
-        var charZero = Vector128.Create((uint)('0'));
+        var charZero = Vector128.Create((uint)'0');
 
         for (var i = 0; i < end; i += Vector128<ushort>.Count)
         {
-            nuint offset = (uint)(i);
+            nuint offset = (uint)i;
 
             var data = Vector128.LoadUnsafe(ref startRef, offset);
             (var data32Lower, var data32Upper) = Vector128.Widen(data);
 
             (data32Lower - charZero).StoreUnsafe(ref destRef, offset);
-            (data32Upper - charZero).StoreUnsafe(ref destRef, offset + (uint)(Vector128<uint>.Count));
+            (data32Upper - charZero).StoreUnsafe(ref destRef, offset + (uint)Vector128<uint>.Count);
         }
 
         for (var i = end; i < arr.Length; i++)
