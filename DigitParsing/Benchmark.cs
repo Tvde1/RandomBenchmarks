@@ -4,7 +4,7 @@ using System.Runtime.Intrinsics;
 using BenchmarkDotNet.Attributes;
 using BenchmarkDotNet.Jobs;
 
-namespace RecordStructBoxing;
+namespace DigitParsing;
 
 [SimpleJob(RuntimeMoniker.Net70)]
 [MemoryDiagnoser(false)]
@@ -28,9 +28,9 @@ public class Benchmark
         }
         return arr;
     }
-    
+
     [Benchmark]
-    public int[] TannerMagic()
+    public int[] TannerMagic_128()
     {
         ReadOnlySpan<char> inputText = _inputText;
         var arr = new int[inputText.Length];
@@ -62,4 +62,44 @@ public class Benchmark
         return arr;
     }
 
+    [Benchmark]
+    public int[] TannerMagic_256()
+    {
+        ReadOnlySpan<char> inputText = _inputText;
+        var result = new int[inputText.Length];
+
+        nuint length = (uint)(inputText.Length);
+
+        nuint offset = 0;
+        nuint simdEnd = length - (uint)Vector256<ushort>.Count;
+
+        ref var inputTextStart = ref Unsafe.As<char, ushort>(ref MemoryMarshal.GetReference(inputText));
+        ref var arrStart = ref Unsafe.As<int, uint>(ref MemoryMarshal.GetArrayDataReference(result));
+
+        var charZero = Vector256.Create((uint)'0');
+
+        while (offset < simdEnd)
+        {
+            var data = Vector256.LoadUnsafe(ref inputTextStart, offset);
+            (var data32Lower, var data32Upper) = Vector256.Widen(data);
+
+            (data32Lower - charZero).StoreUnsafe(ref arrStart, offset);
+            (data32Upper - charZero).StoreUnsafe(ref arrStart, offset + (uint)(Vector256<uint>.Count));
+
+            offset += (uint)(Vector256<ushort>.Count);
+        }
+
+        // Handle remaining elements
+        {
+            offset = simdEnd;
+
+            var data = Vector256.LoadUnsafe(ref inputTextStart, offset);
+            (var data32Lower, var data32Upper) = Vector256.Widen(data);
+
+            (data32Lower - charZero).StoreUnsafe(ref arrStart, offset);
+            (data32Upper - charZero).StoreUnsafe(ref arrStart, offset + (uint)(Vector256<uint>.Count));
+        }
+
+        return result;
+    }
 }

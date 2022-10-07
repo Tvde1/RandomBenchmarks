@@ -1,4 +1,4 @@
 ﻿using BenchmarkDotNet.Running;
-using RecordStructBoxing;
+using DigitParsing;
 
 BenchmarkRunner.Run<Benchmark>();
