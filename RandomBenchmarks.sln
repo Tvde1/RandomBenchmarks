@@ -9,6 +9,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DigitParsing", "DigitParsin
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ByRefInt", "ByRefInt\ByRefInt.csproj", "{F52E6C2B-E8BE-47A9-B6E7-FFAA265220F2}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ParseJsonSubset", "ParseJsonSubset\ParseJsonSubset.csproj", "{8147A02C-1CE4-4E4C-A194-52C139D53077}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{F52E6C2B-E8BE-47A9-B6E7-FFAA265220F2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F52E6C2B-E8BE-47A9-B6E7-FFAA265220F2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F52E6C2B-E8BE-47A9-B6E7-FFAA265220F2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8147A02C-1CE4-4E4C-A194-52C139D53077}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8147A02C-1CE4-4E4C-A194-52C139D53077}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8147A02C-1CE4-4E4C-A194-52C139D53077}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8147A02C-1CE4-4E4C-A194-52C139D53077}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
