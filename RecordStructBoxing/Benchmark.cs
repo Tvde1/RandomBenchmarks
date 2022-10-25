@@ -1,5 +1,4 @@
-﻿using System.Runtime.CompilerServices;
-using BenchmarkDotNet.Attributes;
+﻿using BenchmarkDotNet.Attributes;
 using BenchmarkDotNet.Jobs;
 
 namespace RecordStructBoxing;
@@ -9,57 +8,34 @@ namespace RecordStructBoxing;
 [MemoryDiagnoser(false)]
 public class Benchmark
 {
-    [BenchmarkCategory("Class"), Benchmark(Baseline = true)]
-    public void RecordClass()
+    [Benchmark]
+    public object ReadonlyRecordStructBoxing()
     {
-        var r = new RecordClass(69);
-        DoSomething(r);
+        var r = new ReadonlyRecordStruct(69, 420, 1, 2, 3, 4, 5, 1000, 1000, 1, 2);
+        return DoSomething(r);
     }
 
-    [BenchmarkCategory("Class", "Inline"), Benchmark]
-    public void RecordClass_Inlined()
+    [Benchmark]
+    public object RecordStructBoxing()
     {
-        var r = new RecordClass(69);
-        DoSomethingInlined(r);
-    }
-    
-    [BenchmarkCategory("Struct"), Benchmark]
-    public void RecordStruct()
-    {
-        var r = new RecordStruct(69);
-        DoSomething(r);
+        var r = new RecordStruct(69, 420, 1, 2, 3, 4, 5, 1000, 1000, 1, 2);
+        return DoSomething(r);
     }
 
-    [BenchmarkCategory("Struct", "Inline"), Benchmark]
-    public void RecordStruct_Inline()
+    [Benchmark]
+    public object Record()
     {
-        var r = new RecordStruct(69);
-        DoSomethingInlined(r);
-    }
-
-
-    [BenchmarkCategory("Readonly record struct"), Benchmark]
-    public void ReadonlyRecordStruct()
-    {
-        var r = new ReadonlyRecordStruct(69);
-        DoSomething(r);
-    }
-    
-    [BenchmarkCategory("Readonly record struct", "Inline"), Benchmark]
-    public void ReadonlyRecordStruct_Inline()
-    {
-        var r = new ReadonlyRecordStruct(69);
-        DoSomethingInlined(r);
+        var r = new Record(69, 420, 1, 2, 3, 4, 5, 1000, 1000, 1, 2);
+        return DoSomething(r);
     }
 
     private object DoSomething(object o) => o;
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    private object DoSomethingInlined(object o) => o;
 }
 
-public record RecordClass(int A);
+public readonly record struct ReadonlyRecordStruct(long A, long B, long C, long D, long E, long F, long G, long H,
+    long I, long J, long K);
 
-public record struct RecordStruct(int A);
+public record struct RecordStruct(long A, long B, long C, long D, long E, long F, long G, long H, long I, long J,
+    long K);
 
-public readonly record struct ReadonlyRecordStruct(int A);
+public record Record(long A, long B, long C, long D, long E, long F, long G, long H, long I, long J, long K);
