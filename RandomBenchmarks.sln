@@ -15,6 +15,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SerialNumberParse", "Serial
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StringConcat", "StringConcat\StringConcat.csproj", "{E17F294E-52D5-4046-8F02-E034E631266E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SubstringWithSpan", "SubstringWithSpan\SubstringWithSpan.csproj", "{98B2D950-3598-4D03-B24E-6E723450227E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RegexSpeed", "RegexSpeed\RegexSpeed.csproj", "{BA6FB17A-45ED-4099-838E-034B3C0F9B6B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -45,6 +49,14 @@ Global
 		{E17F294E-52D5-4046-8F02-E034E631266E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E17F294E-52D5-4046-8F02-E034E631266E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E17F294E-52D5-4046-8F02-E034E631266E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{98B2D950-3598-4D03-B24E-6E723450227E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{98B2D950-3598-4D03-B24E-6E723450227E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{98B2D950-3598-4D03-B24E-6E723450227E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{98B2D950-3598-4D03-B24E-6E723450227E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BA6FB17A-45ED-4099-838E-034B3C0F9B6B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BA6FB17A-45ED-4099-838E-034B3C0F9B6B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BA6FB17A-45ED-4099-838E-034B3C0F9B6B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BA6FB17A-45ED-4099-838E-034B3C0F9B6B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
