@@ -21,6 +21,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RegexSpeed", "RegexSpeed\Re
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CustomParseInt", "CustomParseInt\CustomParseInt.csproj", "{CD108BD7-0A88-43D6-9CC1-F13E76793754}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TuningTrouble", "TuningTrouble\TuningTrouble.csproj", "{28E7CA09-BC55-4792-94BF-822AE99DD0E3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -67,6 +69,10 @@ Global
 		{CD108BD7-0A88-43D6-9CC1-F13E76793754}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CD108BD7-0A88-43D6-9CC1-F13E76793754}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CD108BD7-0A88-43D6-9CC1-F13E76793754}.Release|Any CPU.Build.0 = Release|Any CPU
+		{28E7CA09-BC55-4792-94BF-822AE99DD0E3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{28E7CA09-BC55-4792-94BF-822AE99DD0E3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{28E7CA09-BC55-4792-94BF-822AE99DD0E3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{28E7CA09-BC55-4792-94BF-822AE99DD0E3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
