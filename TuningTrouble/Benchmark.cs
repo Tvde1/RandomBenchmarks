@@ -44,63 +44,63 @@ public class Benchmark
 
 file static class TuningImplementation
 {
-public static int FindStartOfMarkerUsingHashSet(string input, int markerLength)
-{
-    for (int i = 0; i < input.Length - markerLength; i++)
-        if (new HashSet<char>(input.Substring(i, markerLength)).Count == markerLength)
-            return i;
-
-    throw new InvalidOperationException("The input has no valid marker.");
-}
-
-public static int FindStartOfMarkerUsingSpan(string input, int markerLength)
-{
-    ReadOnlySpan<char> span = input.AsSpan();
-    for (int index = 0; index < input.Length - markerLength; index++)
+    public static int FindStartOfMarkerUsingHashSet(string input, int markerLength)
     {
-        ReadOnlySpan<char> subSpan = span[index..(index + markerLength)];
+        for (int i = 0; i < input.Length - markerLength; i++)
+            if (new HashSet<char>(input.Substring(i, markerLength)).Count == markerLength)
+                return i;
 
-        if (!ContainsDuplicates(subSpan))
-            return index;
+        throw new InvalidOperationException("The input has no valid marker.");
     }
 
-    throw new InvalidOperationException("The input has no valid marker.");
-
-    static bool ContainsDuplicates(ReadOnlySpan<char> input)
+    public static int FindStartOfMarkerUsingSpan(string input, int markerLength)
     {
-        for (int i = 0; i < input.Length; i++)
-        for (int j = i + 1; j < input.Length; j++)
-            if (input[i] == input[j])
-                return true;
-
-        return false;
-    }
-}
-
-public static int FindStartOfMarkerUsingSkipForward(string input, int payloadSize)
-{
-    ReadOnlySpan<char> span = input.AsSpan();
-    Span<int> charOccurredAt = stackalloc int['z' - 'a' + 1];
-
-    int markerBase = 0;
-    for (int i = 0; i < payloadSize; i++)
-    {
-        int currCharIndex = markerBase + i;
-        char currChar = span[currCharIndex];
-        int currCharAlreadyOccuredAt = charOccurredAt[currChar - 'a'];
-
-        if (currCharAlreadyOccuredAt >= markerBase &&
-            currCharIndex != currCharAlreadyOccuredAt)
+        ReadOnlySpan<char> span = input.AsSpan();
+        for (int index = 0; index < input.Length - markerLength; index++)
         {
-            markerBase = currCharAlreadyOccuredAt + 1;
-            i = -1;
+            ReadOnlySpan<char> subSpan = span[index..(index + markerLength)];
+
+            if (!ContainsDuplicates(subSpan))
+                return index;
         }
 
-        charOccurredAt[currChar - 'a'] = currCharIndex;
+        throw new InvalidOperationException("The input has no valid marker.");
+
+        static bool ContainsDuplicates(ReadOnlySpan<char> input)
+        {
+            for (int i = 0; i < input.Length; i++)
+            for (int j = i + 1; j < input.Length; j++)
+                if (input[i] == input[j])
+                    return true;
+
+            return false;
+        }
     }
 
-    return markerBase;
-}
+    public static int FindStartOfMarkerUsingSkipForward(string input, int payloadSize)
+    {
+        ReadOnlySpan<char> span = input.AsSpan();
+        Span<int> charOccurredAt = stackalloc int['z' - 'a' + 1];
+
+        int markerBase = 0;
+        for (int i = 0; i < payloadSize; i++)
+        {
+            int currCharIndex = markerBase + i;
+            char currChar = span[currCharIndex];
+            int currCharAlreadyOccuredAt = charOccurredAt[currChar - 'a'];
+
+            if (currCharAlreadyOccuredAt >= markerBase &&
+                currCharIndex != currCharAlreadyOccuredAt)
+            {
+                markerBase = currCharAlreadyOccuredAt + 1;
+                i = -1;
+            }
+
+            charOccurredAt[currChar - 'a'] = currCharIndex;
+        }
+
+        return markerBase;
+    }
 }
 
 file static class Input
