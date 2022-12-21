@@ -7,15 +7,17 @@ using BenchmarkDotNet.Running;
 var hashSet4 = TuningImplementation.FindStartOfMarkerUsingHashSet(Input.String, 4);
 var span4 = TuningImplementation.FindStartOfMarkerUsingSpan(Input.String, 4);
 var jump4 = TuningImplementation.FindStartOfMarkerUsingSkipForward(Input.String, 4);
+var jumpRev4 = TuningImplementation.FindStartOfMarkerUsingSkipForwardReverse(Input.String, 4);
 
-var are4Equal = hashSet4 == span4 && span4 == jump4;
+var are4Equal = hashSet4 == span4 && span4 == jump4 && jump4 == jumpRev4;
 Console.WriteLine($"Are all 4 equal: {are4Equal}");
 
 var hashSet14 = TuningImplementation.FindStartOfMarkerUsingHashSet(Input.String, 14);
 var span14 = TuningImplementation.FindStartOfMarkerUsingSpan(Input.String, 14);
 var jump14 = TuningImplementation.FindStartOfMarkerUsingSkipForward(Input.String, 14);
+var jumpRev14 = TuningImplementation.FindStartOfMarkerUsingSkipForwardReverse(Input.String, 14);
 
-var are14Equal = hashSet14 == span14 && span14 == jump14;
+var are14Equal = hashSet14 == span14 && span14 == jump14 && jump14 == jumpRev14;
 Console.WriteLine($"Are all 14 equal: {are14Equal}");
 
 #endif
@@ -40,6 +42,9 @@ public class Benchmark
 
     [Benchmark]
     public int UsingJumps() => TuningImplementation.FindStartOfMarkerUsingSkipForward(Message, MarkerLength);
+    
+    [Benchmark]
+    public int UsingJumpsReverse() => TuningImplementation.FindStartOfMarkerUsingSkipForwardReverse(Message, MarkerLength);
 }
 
 file static class TuningImplementation
@@ -89,14 +94,42 @@ file static class TuningImplementation
             char currChar = span[currCharIndex];
             int currCharAlreadyOccuredAt = charOccurredAt[currChar - 'a'];
 
+            charOccurredAt[currChar - 'a'] = currCharIndex;
+
             if (currCharAlreadyOccuredAt >= markerBase &&
                 currCharIndex != currCharAlreadyOccuredAt)
             {
                 markerBase = currCharAlreadyOccuredAt + 1;
                 i = -1;
             }
+        }
 
-            charOccurredAt[currChar - 'a'] = currCharIndex;
+        return markerBase;
+    }
+
+    public static int FindStartOfMarkerUsingSkipForwardReverse(string input, int payloadSize)
+    {
+        ReadOnlySpan<char> span = input.AsSpan();
+        Span<int> charOccurredAt = stackalloc int['z' - 'a' + 1];
+        charOccurredAt.Fill(-1);
+
+        int markerBase = 0;
+        for (int i = payloadSize - 1; i >= 0; i--)
+        {
+            int currCharIndex = markerBase + i;
+            char currChar = span[currCharIndex];
+            int currCharAlreadyOccuredAt = charOccurredAt[currChar - 'a'];
+
+            if (currCharAlreadyOccuredAt >= markerBase &&
+                currCharIndex < currCharAlreadyOccuredAt)
+            {
+                markerBase = currCharIndex + 1;
+                i = payloadSize;
+            }
+            else
+            {
+                charOccurredAt[currChar - 'a'] = currCharIndex;
+            }
         }
 
         return markerBase;
