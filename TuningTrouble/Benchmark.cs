@@ -35,6 +35,9 @@ public class Benchmark
     public int MarkerLength { get; set; }
 
     [Benchmark]
+    public int UsingHashLinq() => TuningImplementation.FindStartOfMarkerUsingLinq(Message, MarkerLength);
+    
+    [Benchmark]
     public int UsingHashSet() => TuningImplementation.FindStartOfMarkerUsingHashSet(Message, MarkerLength);
 
     [Benchmark(Baseline = true)]
@@ -49,6 +52,15 @@ public class Benchmark
 
 file static class TuningImplementation
 {
+    public static int FindStartOfMarkerUsingLinq(string input, int markerLength)
+    {
+        for (int i = 0; i < input.Length - markerLength; i++)
+            if (input.Substring(i, markerLength).Distinct().Count() == markerLength)
+                return i;
+
+        throw new InvalidOperationException("The input has no valid marker.");
+    }
+    
     public static int FindStartOfMarkerUsingHashSet(string input, int markerLength)
     {
         for (int i = 0; i < input.Length - markerLength; i++)
@@ -107,33 +119,33 @@ file static class TuningImplementation
         return markerBase;
     }
 
-    public static int FindStartOfMarkerUsingSkipForwardReverse(string input, int payloadSize)
+public static int FindStartOfMarkerUsingSkipForwardReverse(string input, int payloadSize)
+{
+    ReadOnlySpan<char> span = input.AsSpan();
+    Span<int> charOccurredAt = stackalloc int['z' - 'a' + 1];
+    charOccurredAt.Fill(-1);
+
+    int markerBase = 0;
+    for (int i = payloadSize - 1; i >= 0; i--)
     {
-        ReadOnlySpan<char> span = input.AsSpan();
-        Span<int> charOccurredAt = stackalloc int['z' - 'a' + 1];
-        charOccurredAt.Fill(-1);
+        int currCharIndex = markerBase + i;
+        char currChar = span[currCharIndex];
+        int currCharAlreadyOccuredAt = charOccurredAt[currChar - 'a'];
 
-        int markerBase = 0;
-        for (int i = payloadSize - 1; i >= 0; i--)
+        if (currCharAlreadyOccuredAt >= markerBase &&
+            currCharIndex < currCharAlreadyOccuredAt)
         {
-            int currCharIndex = markerBase + i;
-            char currChar = span[currCharIndex];
-            int currCharAlreadyOccuredAt = charOccurredAt[currChar - 'a'];
-
-            if (currCharAlreadyOccuredAt >= markerBase &&
-                currCharIndex < currCharAlreadyOccuredAt)
-            {
-                markerBase = currCharIndex + 1;
-                i = payloadSize;
-            }
-            else
-            {
-                charOccurredAt[currChar - 'a'] = currCharIndex;
-            }
+            markerBase = currCharIndex + 1;
+            i = payloadSize;
         }
-
-        return markerBase;
+        else
+        {
+            charOccurredAt[currChar - 'a'] = currCharIndex;
+        }
     }
+
+    return markerBase;
+}
 }
 
 file static class Input
